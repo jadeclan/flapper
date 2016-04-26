@@ -4,6 +4,7 @@
 var app = angular.module('flapperNews', ['ui.router']);
 
 app.factory('posts', [function(){
+    //noinspection UnnecessaryLocalVariableJS
     var o = {
         posts: []
     };
@@ -32,10 +33,7 @@ app.config([
     }]);
 
 
-app.controller('MainCtrl', [
-    '$scope',
-    'posts',
-    function($scope, posts){
+app.controller('MainCtrl', ['$scope', 'posts', function($scope, posts){
 
         $scope.posts = posts.posts;
 
@@ -70,23 +68,19 @@ app.controller('MainCtrl', [
 
     }]);
 
-app.controller('PostsCtrl', [
-    '$scope',
-    '$stateParams',
-    'posts',
-    function($scope, $stateParams, posts){
+app.controller('PostsCtrl', ['$scope', '$stateParams', 'posts', function($scope, $stateParams, posts) {
+    // Note this section does not work as $scope and posts are lost on arriving here.  $stateParams is OK.
+    $scope.post = posts.posts[$stateParams.id];
 
-        $scope.post = posts.posts[$stateParams.id];
-
-        $scope.addComment = function(){
-            console.log($scope.body);
-            if($scope.body === '') { return; }
-            $scope.post.comments.push({
-                body: $scope.body,
-                author: 'user',
-                upvotes: 0
-            });
-            $scope.body = '';
-        };
-
-    }]);
+    $scope.addComment = function () {
+        if ($scope.body === '') {
+            return;
+        }
+        $scope.post.comments.push({
+            body: $scope.body,
+            author: 'user',
+            upvotes: 0
+        });
+        $scope.body = '';
+    };
+}]);
