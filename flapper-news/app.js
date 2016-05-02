@@ -1,3 +1,6 @@
+/*
+ * App used to set up Node, Express, Mongodb and Passport use
+ */
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -66,6 +69,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

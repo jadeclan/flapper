@@ -141,6 +141,7 @@ app.config([
                 controller: 'MainCtrl',
                 resolve: {
                     postPromise: ['posts', function(posts){
+                        console.log('inside the promise to get posts - line 144');
                         return posts.getAll();
                     }]
                 }
@@ -161,8 +162,8 @@ app.config([
     }]);
 
 
-app.controller('MainCtrl', ['$scope', 'auth', 'posts', function($scope, posts){
-
+app.controller('MainCtrl', ['$scope', 'auth', 'posts', function($scope, auth, posts){
+    console.log('got into the MainCtrl');
     $scope.isLoggedIn = auth.isLoggedIn;
 
     $scope.posts = posts.posts;
@@ -193,7 +194,7 @@ app.controller('MainCtrl', ['$scope', 'auth', 'posts', function($scope, posts){
 
 }]);
 
-app.controller('PostsCtrl', ['$scope', 'auth', 'posts', 'post', function($scope, posts, post){
+app.controller('PostsCtrl', ['$scope', 'auth', 'posts', 'post', function($scope, posts, post, auth){
 
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.post = post;
@@ -230,6 +231,7 @@ app.controller('AuthCtrl', ['$scope', '$state', 'auth', function($scope, $state,
             auth.logIn($scope.user).error(function(error){
                 $scope.error = error;
             }).then(function(){
+                console.log("logged in and being sent to home");
                 $state.go('home');
             });
         };
